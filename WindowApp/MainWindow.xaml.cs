@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace WindowApp
 {
@@ -13,9 +14,15 @@ namespace WindowApp
 		public MainWindow()
 		{
 			InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			webBrowser.Source = new Uri(@"C:\");
+			laRoute.Text = webBrowser.Source.LocalPath;
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void btSelectFolder_Click(object sender, RoutedEventArgs e)
 		{
 			using (FolderBrowserDialog fbd = new FolderBrowserDialog())
 			{
@@ -28,14 +35,8 @@ namespace WindowApp
 
 		private void webBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
 		{
-			if (laRuta != null)
-				laRuta.Text = webBrowser.Source.LocalPath;
-		}
-
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			webBrowser.Source = new Uri(@"C:\");
-			laRuta.Text = webBrowser.Source.LocalPath;
+			laRoute.Text = webBrowser.Source.LocalPath;
+			webBrowser.Focus();
 		}
 
 		private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -51,8 +52,13 @@ namespace WindowApp
 		private void btGoParent_Click(object sender, RoutedEventArgs e)
 		{
 			string newUrl = webBrowser.Source.AbsolutePath
-				.Substring(0, webBrowser.Source.AbsolutePath.LastIndexOf("/"));
+				.Substring(0, webBrowser.Source.AbsolutePath.LastIndexOf("/", StringComparison.Ordinal));
 			webBrowser.Source = new Uri(newUrl + "/");
+		}
+
+		private void webBrowser_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if (e.Key == Key.Back) btnBack_Click(sender, e);
 		}
 	}
 }

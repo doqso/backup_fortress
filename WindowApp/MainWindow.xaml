@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:WindowApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-  <Grid>
-    <Button Content="Seleccionar" HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top" Click="Button_Click" Height="23"/>
-    <WebBrowser x:Name="webBrowser" Margin="0,92,0,0" Navigated="webBrowser_Navigated" />
-    <TextBox x:Name="laRuta" Text="Ruta" Margin="129,36,79,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Height="23"/>
+  <Grid >
+    <Button x:Name="btSelectFolder" Content="Seleccionar" HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top" Click="btSelectFolder_Click" Height="23"/>
+    <WebBrowser x:Name="webBrowser" Margin="0,92,0,0" Navigated="webBrowser_Navigated" KeyDown="webBrowser_KeyDown" />
+    <TextBox x:Name="laRoute" Text="Ruta" IsReadOnly="True" Margin="129,36,79,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Height="23"/>
     <Button x:Name="btBack" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Click="btnBack_Click" Width="32" Height="23"/>
     <Button x:Name="btForward" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="47,36,0,0" VerticalAlignment="Top" Click="btnForward_Click" Width="32" Height="23"/>
     <Button x:Name="btGoParent" Content="⬆" HorizontalAlignment="Left" Margin="84,36,0,0" VerticalAlignment="Top" Width="32" Height="23" Click="btGoParent_Click" />
