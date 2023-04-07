@@ -11,15 +11,11 @@ namespace WindowApp.Factory
 {
     public abstract class CloudServiceFactory
     {
-        protected IConfigurationRoot builder;
+        protected static readonly IConfigurationRoot Builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName)
+            .AddJsonFile("appsettings.json", false, true)
+            .Build();
 
-        protected CloudServiceFactory()
-        {
-            builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
-        }
-
-        public abstract CloudService CreateCloudService();
+        public abstract ICloudService CreateCloudService();
     }
 }

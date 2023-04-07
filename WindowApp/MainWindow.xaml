@@ -6,13 +6,112 @@
         xmlns:local="clr-namespace:WindowApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-  <Grid >
-    <Button x:Name="btSelectFolder" Content="Seleccionar" HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top" Click="btSelectFolder_Click" Height="23"/>
-    <WebBrowser x:Name="webBrowser" Margin="0,92,0,0" Navigated="webBrowser_Navigated" KeyDown="webBrowser_KeyDown" />
-    <TextBox x:Name="laRoute" Text="Ruta" IsReadOnly="True" Margin="129,36,79,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Height="23"/>
-    <Button x:Name="btBack" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Click="btnBack_Click" Width="32" Height="23"/>
-    <Button x:Name="btForward" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="47,36,0,0" VerticalAlignment="Top" Click="btnForward_Click" Width="32" Height="23"/>
-    <Button x:Name="btGoParent" Content="⬆" HorizontalAlignment="Left" Margin="84,36,0,0" VerticalAlignment="Top" Width="32" Height="23" Click="btGoParent_Click" />
+  <Grid>
+    <DockPanel VerticalAlignment="Top">
+      <Menu>
+        <MenuItem Header="_Edit">
+          <MenuItem Command="ApplicationCommands.Copy" />
+          <MenuItem Command="ApplicationCommands.Cut" />
+          <MenuItem Command="ApplicationCommands.Paste" />
+        </MenuItem>
+        <MenuItem Header="_Font">
+          <MenuItem Header="_Bold" IsCheckable="True" />
+          <MenuItem Header="_Italic" IsCheckable="True" />
+          <Separator />
+          <MenuItem Header="I_ncrease Font Size" />
+          <MenuItem Header="_Decrease Font Size" />
+        </MenuItem>
+      </Menu>
+      <TextBox Name="textBox1" TextWrapping="Wrap"
+               Margin="2">
+        The quick brown fox jumps over the lazy dog.
+      </TextBox>
+    </DockPanel>
+
+    <Grid Margin="0 23 0 0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+
+      <!-- Local files-->
+      <Grid>
+        <Button x:Name="btSelectFolder" Content="Seleccionar" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Click="btSelectFolder_Click" />
+
+        <TextBox x:Name="laRoute" Text="Ruta" IsReadOnly="True" Margin="110,0,69,0" VerticalContentAlignment="Center"
+                 VerticalAlignment="Top" />
+
+        <Button x:Name="btBack" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"
+                Click="btnBack_Click" Width="32" />
+
+        <Button x:Name="btForward" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="37,0,0,0"
+                VerticalAlignment="Top" Click="btnForward_Click" Width="32" />
+
+        <Button x:Name="btGoParent" Content="⬆" HorizontalAlignment="Left" Margin="74,0,0,0" VerticalAlignment="Top"
+                Width="32" Click="btGoParent_Click" />
+
+        <WebBrowser x:Name="wbLocalFiles" Margin="0,30,0,0" Navigated="webBrowser_Navigated"
+                    KeyDown="webBrowser_KeyDown" />
+      </Grid>
+
+      <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+
+      <!-- Cloud files-->
+      <Grid Grid.Column="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"></RowDefinition>
+          <RowDefinition Height="Auto"></RowDefinition>
+          <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="laCloudProviderName" VerticalAlignment="Top" HorizontalAlignment="Left">Amazon</Label>
+
+        <!-- Cloud providers definition-->
+        <Grid Grid.Row="1">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+          </Grid.ColumnDefinitions>
+
+          <ComboBox x:Name="cbBuckets" HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="Buckets" SelectionChanged="cbBuckets_SelectionChanged">
+          </ComboBox>
+
+          <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"></ColumnDefinition>
+              <ColumnDefinition Width="Auto"></ColumnDefinition>
+              <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <RadioButton GroupName="cloudProvider" Checked="RadioButton_Checked">
+              <RadioButton.Content>
+                <TextBlock Text="AWS" Margin="-4 0 0 0" />
+              </RadioButton.Content>
+            </RadioButton>
+            <RadioButton Grid.Column="1" GroupName="cloudProvider" Margin="5 0 0 0" Checked="RadioButton_Checked">
+              <RadioButton.Content>
+                <TextBlock Text="OVH Cloud" Margin="-4 0 0 0" />
+              </RadioButton.Content>
+            </RadioButton>
+            <RadioButton Grid.Column="2" GroupName="cloudProvider" Margin="5 0 0 0" Checked="RadioButton_Checked">
+              <RadioButton.Content>
+                <TextBlock Text="Otros" Margin="-4 0 0 0" />
+              </RadioButton.Content>
+            </RadioButton>
+          </Grid>
+
+        </Grid>
+
+        <ListView Grid.Row="2" x:Name="lvBucketObjects" AllowDrop="True" Drop="lvBucketObjects_Drop"
+                  DragOver="lvBucketObjects_DragOver" />
+
+      </Grid>
+
+    </Grid>
 
   </Grid>
 </Window>
