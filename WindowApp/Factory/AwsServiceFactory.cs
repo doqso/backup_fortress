@@ -9,27 +9,45 @@ using System.Windows;
 using Amazon;
 using Microsoft.Extensions.Configuration;
 using WindowApp.Services.AWS;
+using System.Runtime.Intrinsics.X86;
 
 namespace WindowApp.Factory
 {
     public class AwsServiceFactory : CloudServiceFactory
     {
-        public override ICloudService CreateCloudService()
+        public override async Task<ICloudService?> CreateCloudService()
         {
             var mySecrets = GetAwsSecrets();
             var client = new AmazonS3Client(mySecrets[0], mySecrets[1], RegionEndpoint.EUSouth2);
-            return new AwsService(client);
+            var cloudService = new AwsService(client);
+
+            if (await CheckConnection(cloudService)) return cloudService;
+
+            return null;
         }
 
-        private string[] GetAwsSecrets()
+        protected override string[] GetAwsSecrets()
         {
             var mySecrets = new string[2];
-            var awsSection = Builder.GetSection("AWS");
+            var awsSection = Builder.GetSection("accounts").GetSection("AWS");
 
-            mySecrets[0] = awsSection.GetSection("Access_key").Value;
-            mySecrets[1] = awsSection.GetSection("Secret_access_key").Value;
+            mySecrets[0] = awsSection.GetSection("access_key").Value;
+            mySecrets[1] = awsSection.GetSection("secret_access_key").Value;
 
             return mySecrets;
+        }
+
+        protected override async Task<bool> CheckConnection<T>(T cloudService)
+        {
+            try
+            {
+                await cloudService.ListBucketsAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -9,39 +9,41 @@
   <Grid>
     <DockPanel VerticalAlignment="Top">
       <Menu>
-        <MenuItem Header="_Edit">
-          <MenuItem Command="ApplicationCommands.Copy" />
-          <MenuItem Command="ApplicationCommands.Cut" />
-          <MenuItem Command="ApplicationCommands.Paste" />
+        <MenuItem Header="Configuración">
+          <MenuItem Header="Realizar copias cada">
+            <RadioButton Content="Desactivar" />
+            <RadioButton Content="1 hora" />
+            <RadioButton Content="3 horas" />
+            <RadioButton Content="6 horas" />
+            <RadioButton Content="12 horas" />
+            <RadioButton Content="24 horas" />
+            <RadioButton Content="3 dias" />
+            <RadioButton Content="1 semana" />
+            <RadioButton Content="1 mes" />
+          </MenuItem>
         </MenuItem>
-        <MenuItem Header="_Font">
-          <MenuItem Header="_Bold" IsCheckable="True" />
-          <MenuItem Header="_Italic" IsCheckable="True" />
-          <Separator />
-          <MenuItem Header="I_ncrease Font Size" />
-          <MenuItem Header="_Decrease Font Size" />
+        <MenuItem Header="Administración de cuentas">
+          <MenuItem Header="AWS" />
+          <MenuItem Header="OVH Cloud" />
         </MenuItem>
+
       </Menu>
-      <TextBox Name="textBox1" TextWrapping="Wrap"
-               Margin="2">
-        The quick brown fox jumps over the lazy dog.
-      </TextBox>
     </DockPanel>
 
     <Grid Margin="0 23 0 0">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition />
+        <ColumnDefinition Width="1.5*" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
       <!-- Local files-->
       <Grid>
-        <Button x:Name="btSelectFolder" Content="Seleccionar" HorizontalAlignment="Right"
+        <Button x:Name="btSelectFolder" Content="📂" Width="35" HorizontalAlignment="Right"
                 VerticalAlignment="Top" Click="btSelectFolder_Click" />
 
-        <TextBox x:Name="laRoute" Text="Ruta" IsReadOnly="True" Margin="110,0,69,0" VerticalContentAlignment="Center"
-                 VerticalAlignment="Top" />
+        <TextBox x:Name="laRoute" Text="C:\" IsReadOnly="True" Margin="110,0,40,0" VerticalContentAlignment="Center"
+                 VerticalAlignment="Top" Height="20" />
 
         <Button x:Name="btBack" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"
                 Click="btnBack_Click" Width="32" />
@@ -62,16 +64,13 @@
       <Grid Grid.Column="2">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"></RowDefinition>
-          <RowDefinition Height="Auto"></RowDefinition>
           <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label x:Name="laCloudProviderName" VerticalAlignment="Top" HorizontalAlignment="Left">Amazon</Label>
-
         <!-- Cloud providers definition-->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
           </Grid.ColumnDefinitions>
 
@@ -80,9 +79,8 @@
                     Text="Buckets" SelectionChanged="cbBuckets_SelectionChanged">
           </ComboBox>
 
-          <Grid Grid.Column="1">
+          <Grid Grid.Column="1" HorizontalAlignment="Right" Width="130">
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"></ColumnDefinition>
               <ColumnDefinition Width="Auto"></ColumnDefinition>
               <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -97,17 +95,18 @@
                 <TextBlock Text="OVH Cloud" Margin="-4 0 0 0" />
               </RadioButton.Content>
             </RadioButton>
-            <RadioButton Grid.Column="2" GroupName="cloudProvider" Margin="5 0 0 0" Checked="RadioButton_Checked">
-              <RadioButton.Content>
-                <TextBlock Text="Otros" Margin="-4 0 0 0" />
-              </RadioButton.Content>
-            </RadioButton>
           </Grid>
 
         </Grid>
 
-        <ListView Grid.Row="2" x:Name="lvBucketObjects" AllowDrop="True" Drop="lvBucketObjects_Drop"
-                  DragOver="lvBucketObjects_DragOver" />
+        <ListView Grid.Row="1" x:Name="lvBucketObjects" AllowDrop="True" Drop="lvBucketObjects_Drop"
+                  DragOver="lvBucketObjects_DragOver">
+          <ListView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Descargar"></MenuItem>
+            </ContextMenu>
+          </ListView.ContextMenu>
+        </ListView>
 
       </Grid>
 

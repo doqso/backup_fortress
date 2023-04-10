@@ -1,0 +1,32 @@
+{
+  "accounts": {
+    "AWS": {
+      "access_key": "AKIATFVAOOY66R4JFUXW",
+      "secret_access_key": "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"
+    },
+    "OVH": {
+      "access_key": "",
+      "secret_access_key": ""
+    }
+  },
+
+  "backup_frequency": 0,
+
+  "synchronized_folders": [
+    {
+      "local_path": "/home/username/Downloads",
+      "remote_path": [
+        {
+          "service": "AWS",
+          "bucket": "mybucket",
+          "path": "myfolder"
+        },
+        {
+          "service": "OVH",
+          "bucket": "mybucket",
+          "path": "myfolder"
+        }
+      ]
+    }
+  ]
+}

@@ -1,16 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using WindowApp.Factory;
-using ComboBox = System.Windows.Controls.ComboBox;
-using DataFormats = System.Windows.DataFormats;
-using DragDropEffects = System.Windows.DragDropEffects;
-using RadioButton = System.Windows.Controls.RadioButton;
 
 namespace WindowApp
 {
@@ -19,7 +13,13 @@ namespace WindowApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ICloudService cloud;
+        private const byte AWS_POS = 0;
+
+        private const byte OVH_POS = 1;
+
+        private readonly ICloudService?[] _connectedClouds = new ICloudService[2];
+
+        private ICloudService? _cloud;
 
         public MainWindow()
         {
@@ -43,7 +43,7 @@ namespace WindowApp
             }
         }
 
-        private void webBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private void webBrowser_Navigated(object sender, NavigationEventArgs e)
         {
             laRoute.Text = wbLocalFiles.Source.LocalPath;
             wbLocalFiles.Focus();
@@ -69,7 +69,7 @@ namespace WindowApp
             wbLocalFiles.Source = new Uri(newUrl + "/");
         }
 
-        private void webBrowser_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void webBrowser_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Back) btnBack_Click(sender, e);
         }
@@ -77,15 +77,15 @@ namespace WindowApp
         private async void cbBuckets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lvBucketObjects.Items.Clear();
-            
-            var selectedBucket = cbBuckets.SelectedItem;
-            if (selectedBucket == null) return;
 
-            (await cloud.ListFilesAsync(selectedBucket.ToString() ?? string.Empty))
+            var selectedBucket = cbBuckets.SelectedItem;
+            if (selectedBucket == null || _cloud == null) return;
+
+            (await _cloud.ListFilesAsync(selectedBucket.ToString() ?? string.Empty))
                 .ForEach(o => lvBucketObjects.Items.Add(o.Key));
         }
 
-        private void lvBucketObjects_Drop(object sender, System.Windows.DragEventArgs e)
+        private void lvBucketObjects_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -97,7 +97,7 @@ namespace WindowApp
             }
         }
 
-        private void lvBucketObjects_DragOver(object sender, System.Windows.DragEventArgs e)
+        private void lvBucketObjects_DragOver(object sender, DragEventArgs e)
         {
             if (cbBuckets.SelectedItem != null) return;
 
@@ -108,25 +108,37 @@ namespace WindowApp
         private async void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             var radioText = ((sender as RadioButton)?.Content as TextBlock)?.Text;
-            laCloudProviderName.Content = radioText;
 
             switch (radioText)
             {
                 case "AWS":
-                    cloud = new AwsServiceFactory().CreateCloudService();
+                    _connectedClouds[AWS_POS] = await new AwsServiceFactory().CreateCloudService();
 
-                    cbBuckets.Items.Clear();
+                    _cloud = _connectedClouds[AWS_POS];
 
-                    (await cloud.ListBucketsAsync())
-                        .ForEach(b => cbBuckets.Items.Add(b.BucketName));
                     break;
-                /*case "OVH Cloud":
-                    cloud = new OvhServiceFactory().CreateCloudService();
+
+                case "OVH Cloud":
+                    // cloudServices[OVH_POS] = new OvhServiceFactory().CreateCloudService();
+                    //
+                    // selectedCloud = cloudServices[OVH_POS];
+
+                    _cloud = null;
+
                     break;
-                case "Google":
-                    cloud = new GoogleServiceFactory().CreateCloudService();
-                    break;*/
             }
+
+            cbBuckets.Items.Clear();
+
+            if (_cloud == null)
+            {
+                MessageBox.Show($"La conexión a {radioText} o los permisos han fallado. Revisa tus credenciales y vuelve a intentarlo.");
+                ((RadioButton)sender).IsChecked = false;
+                return;
+            }
+
+            (await _cloud.ListBucketsAsync())
+                .ForEach(b => cbBuckets.Items.Add(b.BucketName));
 
             cbBuckets.SelectedIndex = 0;
         }

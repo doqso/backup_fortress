@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WindowApp.Factory
@@ -13,9 +8,13 @@ namespace WindowApp.Factory
     {
         protected static readonly IConfigurationRoot Builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName)
-            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("configuration.json", false, true)
             .Build();
 
-        public abstract ICloudService CreateCloudService();
+        public abstract Task<ICloudService?> CreateCloudService();
+
+        protected abstract string[] GetAwsSecrets();
+
+        protected abstract Task<bool> CheckConnection<T>(T cloudService) where T : ICloudService;
     }
 }

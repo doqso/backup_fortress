@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -69,7 +68,6 @@ namespace WindowApp.Services.AWS
         {
             return (await _client.ListBucketsAsync())
                 .Buckets;
-                
         }
     }
 }
