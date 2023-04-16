@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using Autofac;
+using Microsoft.Extensions.Configuration;
 using WindowApp.Services.AWS;
 
 namespace WindowApp
@@ -14,25 +13,29 @@ namespace WindowApp
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-	{
-        // private IContainer _container;
-        //
-        // protected override void OnStartup(StartupEventArgs e)
-        // {
-        //     base.OnStartup(e);
-        //
-        //     var builder = new ContainerBuilder();
-        //
-        //     builder.RegisterType<AwsService>().As<ICloudService>();
-        //
-        //     _container = builder.Build();
-        // }
-        //
-        // protected override void OnExit(ExitEventArgs e)
-        // {
-        //     base.OnExit(e);
-        //
-        //     _container.Dispose();
-        // }
+    {
+        /*private IContainer _container;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName)
+                .AddJsonFile("configuration.json", false, true)
+                .Build();
+
+            var builder = new ContainerBuilder();
+            builder.Register<IConfigurationRoot>(con => configuration).SingleInstance();
+
+            _container = builder.Build();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            _container.Dispose();
+        }*/
     }
 }

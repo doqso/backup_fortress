@@ -34,12 +34,11 @@ namespace WindowApp
 
         private void btSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using var fbd = new FolderBrowserDialog();
+
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    wbLocalFiles.Source = new Uri(fbd.SelectedPath);
-                }
+                wbLocalFiles.Source = new Uri(fbd.SelectedPath);
             }
         }
 
@@ -61,10 +60,9 @@ namespace WindowApp
 
         private void btGoParent_Click(object sender, RoutedEventArgs e)
         {
-            string newUrl = wbLocalFiles.Source.AbsolutePath
-                .Substring(0,
-                    wbLocalFiles.Source.AbsolutePath
-                        .LastIndexOf("/", StringComparison.Ordinal));
+            var newUrl = wbLocalFiles.Source
+                .AbsolutePath[..wbLocalFiles.Source.AbsolutePath
+                    .LastIndexOf("/", StringComparison.Ordinal)];
 
             wbLocalFiles.Source = new Uri(newUrl + "/");
         }
@@ -132,7 +130,10 @@ namespace WindowApp
 
             if (_cloud == null)
             {
-                MessageBox.Show($"La conexión a {radioText} o los permisos han fallado. Revisa tus credenciales y vuelve a intentarlo.");
+                MessageBox.Show(
+                    $"La conexión a {radioText} o los permisos han fallado. " +
+                    "Revisa tus credenciales y vuelve a intentarlo.");
+                
                 ((RadioButton)sender).IsChecked = false;
                 return;
             }
@@ -141,6 +142,20 @@ namespace WindowApp
                 .ForEach(b => cbBuckets.Items.Add(b.BucketName));
 
             cbBuckets.SelectedIndex = 0;
+        }
+
+        private async void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvBucketObjects.SelectedItem == null) return;
+
+            using var fbw = new FolderBrowserDialog();
+
+            fbw.ShowDialog();
+
+            MessageBox.Show(fbw.SelectedPath + " | " + await _cloud?
+                .DownloadFileAsync(cbBuckets.SelectedItem.ToString(),
+                    lvBucketObjects.SelectedItem.ToString(),
+                    fbw.SelectedPath));
         }
     }
 }

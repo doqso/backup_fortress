@@ -1,15 +1,9 @@
 ﻿using Amazon.S3;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using Amazon;
-using Microsoft.Extensions.Configuration;
 using WindowApp.Services.AWS;
-using System.Runtime.Intrinsics.X86;
 
 namespace WindowApp.Factory
 {
