@@ -15,18 +15,14 @@
 
     <DockPanel VerticalAlignment="Top">
       <Menu>
-        <MenuItem Header="Configuración">
-          <MenuItem Header="Realizar copias cada">
-            <RadioButton Content="Desactivar" />
-            <RadioButton Content="1 hora" />
-            <RadioButton Content="3 horas" />
-            <RadioButton Content="6 horas" />
-            <RadioButton Content="12 horas" />
-            <RadioButton Content="24 horas" />
-            <RadioButton Content="3 dias" />
-            <RadioButton Content="1 semana" />
-            <RadioButton Content="1 mes" />
+        <MenuItem Header="Editar">
+          <MenuItem Header="Cloud" Icon="☁">
+            <MenuItem Header="Nuevo contenedor" Icon="➕" Foreground="#FF006532"/>
+            <MenuItem Header="Borrar contenedor" Icon="➖" Foreground="#FF900303"/>
           </MenuItem>
+        </MenuItem>
+        <MenuItem Header="Ver">
+          <MenuItem Header="Sincronizados"></MenuItem>
         </MenuItem>
 
         <MenuItem Header="Administración de cuentas">
@@ -70,12 +66,6 @@
                   KeyDown="webBrowser_KeyDown" />
 
       <GridSplitter Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
-
-      <!--Cloud files-->
-      <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-        <Button Content="Nuevo contenedor" Background="#FFC3EEC4" Foreground="Black" />
-        <Button Content="Eliminar contenedor" Background="#FFFF9B9B" Foreground="Black" />
-      </StackPanel>
 
       <!-- Cloud providers definition-->
       <Grid Grid.Column="2" Grid.Row="1">

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowApp", "WindowApp\WindowApp.csproj", "{5BC98005-50A1-4E8B-A1D2-1D074AC4D6CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowApp", "WindowApp\WindowApp.csproj", "{5BC98005-50A1-4E8B-A1D2-1D074AC4D6CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{04C513A5-0B19-4E09-BBF4-5124048AE970}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{36305C06-579D-4108-8059-1B06F8BF463F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{04C513A5-0B19-4E09-BBF4-5124048AE970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C513A5-0B19-4E09-BBF4-5124048AE970}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C513A5-0B19-4E09-BBF4-5124048AE970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36305C06-579D-4108-8059-1B06F8BF463F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36305C06-579D-4108-8059-1B06F8BF463F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36305C06-579D-4108-8059-1B06F8BF463F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36305C06-579D-4108-8059-1B06F8BF463F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

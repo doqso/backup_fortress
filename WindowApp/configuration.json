@@ -10,8 +10,6 @@
     }
   },
 
-  "backup_frequency": 0,
-
   "synchronized_folders": [
     {
       "local_path": "/home/username/Downloads",
@@ -26,7 +24,8 @@
           "bucket": "mybucket",
           "path": "myfolder"
         }
-      ]
+      ],
+      "backup_frequency": 3
     }
   ]
 }
