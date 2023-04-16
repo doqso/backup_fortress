@@ -5,7 +5,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
-using WindowApp.Services.AWS;
 
 namespace WindowApp
 {

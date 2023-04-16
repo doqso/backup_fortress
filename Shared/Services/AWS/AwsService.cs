@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
-using WindowApp.Utils;
+using Shared.util;
 
-namespace WindowApp.Services.AWS
+namespace Shared.Services.AWS
 {
     public class AwsService : ICloudService
     {

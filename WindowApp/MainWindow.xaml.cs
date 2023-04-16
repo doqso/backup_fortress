@@ -4,7 +4,9 @@ using System.Windows.Controls;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using WindowApp.Factory;
+using Shared;
+using Shared.Factory;
+using Shared.Services;
 
 namespace WindowApp
 {

@@ -9,13 +9,12 @@
       "secret_access_key": ""
     }
   },
-
   "synchronized_folders": [
     {
       "local_path": "/home/username/Downloads",
       "remote_path": [
         {
-          "service": "AWS",
+          "cloud_name": "AWS",
           "bucket": "mybucket",
           "path": "myfolder"
         },
