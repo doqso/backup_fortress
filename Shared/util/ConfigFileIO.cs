@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shared.models;
@@ -11,8 +13,13 @@ namespace Shared.util
 
         static ConfigFileIO()
         {
+#if DEBUG
             var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.FullName;
-            ConfigFilePath = Path.Combine(projectRoot!, "Shared", "configuration.json");
+            ConfigFilePath = Path.Combine(projectRoot!, "Shared", "config.development.json");
+#else
+            var projectRoot = Directory.GetParent(new Uri(Assembly.GetExecutingAssembly().Location).OriginalString).FullName;
+            ConfigFilePath = Path.Combine(projectRoot!, "config.json");
+#endif
         }
 
         public static CloudAccount? ReadAccountCredentials(string cloudName)

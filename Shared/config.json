@@ -1,0 +1,14 @@
+{
+  "accounts": {
+    "AWS": {
+      "access_key": "",
+      "secret_access_key": ""
+    },
+    "OVH": {
+      "access_key": "",
+      "secret_access_key": ""
+    }
+  },
+
+  "synchronized_folders": []
+}
