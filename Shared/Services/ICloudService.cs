@@ -1,7 +1,9 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using Amazon.S3.Model;
 
-namespace Shared.Services
+namespace SharedLibrary.Services
 {
     public interface ICloudService
     {

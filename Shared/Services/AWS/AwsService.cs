@@ -1,9 +1,12 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Shared.util;
+using SharedLibrary.util;
 
-namespace Shared.Services.AWS
+namespace SharedLibrary.Services.AWS
 {
     public class AwsService : ICloudService
     {
@@ -20,7 +23,7 @@ namespace Shared.Services.AWS
             {
                 BucketName = bucketName,
                 Key = objectName,
-                FilePath = filePath,
+                FilePath = filePath
             };
 
             return (await _client.PutObjectAsync(request)).HttpStatusCode;
@@ -29,23 +32,26 @@ namespace Shared.Services.AWS
 
         public async Task<HttpStatusCode> DownloadFileAsync(string bucketName, string objectName, string savePath)
         {
-            GetObjectRequest request = new GetObjectRequest
+            var request = new GetObjectRequest
             {
                 BucketName = bucketName,
                 Key = objectName
             };
 
-            using GetObjectResponse response = await _client.GetObjectAsync(request);
-            await using Stream responseStream = response.ResponseStream;
+            var response = await _client.GetObjectAsync(request);
+            var responseStream = response.ResponseStream;
 
             FileIOManager.Write(responseStream, Path.Combine(savePath, objectName));
+
+            response.Dispose();
+            responseStream.Dispose();
 
             return response.HttpStatusCode;
         }
 
         public async Task<HttpStatusCode> DeleteFileAsync(string bucketName, string objectName)
         {
-            var request = new DeleteObjectRequest()
+            var request = new DeleteObjectRequest
             {
                 BucketName = bucketName,
                 Key = objectName

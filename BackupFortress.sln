@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowApp", "WindowApp\Wind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{04C513A5-0B19-4E09-BBF4-5124048AE970}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{36305C06-579D-4108-8059-1B06F8BF463F}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "Setup1\Setup1.vdproj", "{382AD416-8ABF-4818-A0D9-D17EA30772B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{A147DCD8-E22F-482E-87A5-C0BBB955D782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,12 +25,12 @@ Global
 		{04C513A5-0B19-4E09-BBF4-5124048AE970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C513A5-0B19-4E09-BBF4-5124048AE970}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C513A5-0B19-4E09-BBF4-5124048AE970}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36305C06-579D-4108-8059-1B06F8BF463F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36305C06-579D-4108-8059-1B06F8BF463F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36305C06-579D-4108-8059-1B06F8BF463F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36305C06-579D-4108-8059-1B06F8BF463F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{382AD416-8ABF-4818-A0D9-D17EA30772B9}.Debug|Any CPU.ActiveCfg = Debug
 		{382AD416-8ABF-4818-A0D9-D17EA30772B9}.Release|Any CPU.ActiveCfg = Release
+		{A147DCD8-E22F-482E-87A5-C0BBB955D782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A147DCD8-E22F-482E-87A5-C0BBB955D782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A147DCD8-E22F-482E-87A5-C0BBB955D782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A147DCD8-E22F-482E-87A5-C0BBB955D782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

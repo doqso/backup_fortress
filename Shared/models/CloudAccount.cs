@@ -1,7 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Shared.models
+namespace SharedLibrary.models
 {
     public class CloudAccount
     {

@@ -1,11 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Shared.models;
+using SharedLibrary.models;
 
-namespace Shared.util
+namespace SharedLibrary.util
 {
     public class ConfigFileIO
     {
@@ -15,14 +15,15 @@ namespace Shared.util
         {
 #if DEBUG
             var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.FullName;
-            ConfigFilePath = Path.Combine(projectRoot!, "Shared", "config.development.json");
+            ConfigFilePath = Path.Combine(projectRoot, "Shared", "config.development.json");
 #else
-            var projectRoot = Directory.GetParent(new Uri(Assembly.GetExecutingAssembly().Location).OriginalString).FullName;
-            ConfigFilePath = Path.Combine(projectRoot!, "config.json");
+            var projectRoot = Directory.GetParent(new Uri(Assembly.GetExecutingAssembly().Location).OriginalString)
+                .FullName;
+            ConfigFilePath = Path.Combine(projectRoot, "config.json");
 #endif
         }
 
-        public static CloudAccount? ReadAccountCredentials(string cloudName)
+        public static CloudAccount ReadAccountCredentials(string cloudName)
         {
             var configJson = GetConfigurationJson();
             var mainToken = configJson.SelectToken("accounts").SelectToken(cloudName);
@@ -53,7 +54,7 @@ namespace Shared.util
             return true;
         }
 
-        private static JObject? GetConfigurationJson()
+        private static JObject GetConfigurationJson()
         {
             var file = File.ReadAllText(ConfigFilePath);
             return JsonConvert.DeserializeObject<JObject>(file);
