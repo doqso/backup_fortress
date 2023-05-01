@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SharedLibrary.models
+namespace Shared.models
 {
     public class CloudAccount
     {

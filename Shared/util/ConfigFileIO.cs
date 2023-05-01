@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Timers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SharedLibrary.models;
+using Shared.models;
 
-namespace SharedLibrary.util
+namespace Shared.util
 {
     public class ConfigFileIO
     {
-        private static readonly string ConfigFilePath;
+        public static string ConfigFilePath { get; }
 
         static ConfigFileIO()
         {
@@ -25,36 +28,79 @@ namespace SharedLibrary.util
 
         public static CloudAccount ReadAccountCredentials(string cloudName)
         {
-            var configJson = GetConfigurationJson();
-            var mainToken = configJson.SelectToken("accounts").SelectToken(cloudName);
+            var configJson = ReadConfigurationJson();
+            var credentialsToken = configJson.SelectToken("accounts")?.SelectToken(cloudName);
 
-            if (mainToken == null) return null;
+            if (credentialsToken == null) return null;
 
             var cloudAccount = new CloudAccount
             {
-                AccessKey = mainToken.SelectToken("access_key").ToString(),
-                SecretAccessKey = mainToken.SelectToken("secret_access_key").ToString()
+                AccessKey = credentialsToken.SelectToken("access_key").ToString(),
+                SecretAccessKey = credentialsToken.SelectToken("secret_access_key").ToString()
             };
+
+            if (cloudAccount.AccessKey.Trim().Length < 1
+                || cloudAccount.SecretAccessKey.Trim().Length < 1) return null;
 
             return cloudAccount;
         }
 
         public static bool WriteAccountCredentials(CloudAccount account, string cloudName)
         {
-            var configJson = GetConfigurationJson();
+            var configJson = ReadConfigurationJson();
 
             configJson.SelectToken("accounts")?
-                .SelectToken(cloudName)
+                .SelectToken(cloudName)?
                 .Replace(JToken.FromObject(account));
 
-            var str = configJson.ToString();
-
-            File.WriteAllText(ConfigFilePath, str);
+            File.WriteAllText(ConfigFilePath, configJson.ToString());
 
             return true;
         }
 
-        private static JObject GetConfigurationJson()
+        public static List<CloudFile> ReadSynchronizedFiles()
+        {
+            var configJson = ReadConfigurationJson();
+
+            var mainToken = (JArray)configJson.SelectToken("synchronized_folders")
+                            ?? JArray.Parse("[]");
+
+            return JsonConvert.DeserializeObject<List<CloudFile>>(mainToken.ToString());
+        }
+
+        public static bool WriteSynchronizedFile(CloudFile cloudFiles)
+        {
+            var configJson = ReadConfigurationJson();
+
+            configJson.SelectToken("synchronized_folders")?
+                .SingleOrDefault(c => c.Value<string>("local_path").Equals(cloudFiles.LocalPath))?
+                .Replace(JToken.FromObject(cloudFiles));
+
+            File.WriteAllText(ConfigFilePath, configJson.ToString());
+
+            return true;
+        }
+
+        public static bool WriteSynchronizedFiles(List<CloudFile> cloudFiles)
+        {
+            var configJson = ReadConfigurationJson();
+
+            var synchronizedToken = new JArray();
+            synchronizedToken.Clear();
+
+            foreach (var cloudFile in cloudFiles)
+            {
+                synchronizedToken.Add(JToken.FromObject(cloudFile));
+            }
+
+            configJson.SelectToken("synchronized_folders")?.Replace(synchronizedToken);
+
+            File.WriteAllText(ConfigFilePath, configJson.ToString());
+
+            return true;
+        }
+
+        private static JObject ReadConfigurationJson()
         {
             var file = File.ReadAllText(ConfigFilePath);
             return JsonConvert.DeserializeObject<JObject>(file);

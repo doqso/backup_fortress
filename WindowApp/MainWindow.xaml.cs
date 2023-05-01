@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Reflection;
+using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using SharedLibrary.Factory;
-using SharedLibrary.Services;
+using Shared.Factory;
+using Shared.Services;
+using Shared.util;
 using DataFormats = System.Windows.DataFormats;
 using DragDropEffects = System.Windows.DragDropEffects;
 using DragEventArgs = System.Windows.DragEventArgs;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using RadioButton = System.Windows.Controls.RadioButton;
+using Timer = System.Timers.Timer;
 
 namespace WindowApp;
 
@@ -20,12 +25,6 @@ namespace WindowApp;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private const byte AWS_POS = 0;
-
-    private const byte OVH_POS = 1;
-
-    private readonly ICloudService?[] _connectedClouds = new ICloudService[2];
-
     private ICloudService? _cloud;
 
     public MainWindow()
@@ -43,7 +42,8 @@ public partial class MainWindow : Window
     {
         using var fbd = new FolderBrowserDialog();
 
-        if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK) wbLocalFiles.Source = new Uri(fbd.SelectedPath);
+        if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            wbLocalFiles.Source = new Uri(fbd.SelectedPath);
     }
 
     private void webBrowser_Navigated(object sender, NavigationEventArgs e)
@@ -83,20 +83,19 @@ public partial class MainWindow : Window
         var selectedBucket = cbBuckets.SelectedItem;
         if (selectedBucket == null || _cloud == null) return;
 
-        (await _cloud.ListFilesAsync(selectedBucket.ToString() ?? string.Empty))
+        (await _cloud.ListFilesAsync(selectedBucket.ToString()))
             .ForEach(o => lvBucketObjects.Items.Add(o.Key));
     }
 
     private void lvBucketObjects_Drop(object sender, DragEventArgs e)
     {
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
-        {
-            // Note that you can have more than one file.
-            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+        if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
 
-            e.Handled = true;
-            // handle the files here!
-        }
+        // Note that you can have more than one file.
+        var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+
+        e.Handled = true;
+        // handle the files here!
     }
 
     private void lvBucketObjects_DragOver(object sender, DragEventArgs e)
@@ -111,24 +110,12 @@ public partial class MainWindow : Window
     {
         var radioText = ((sender as RadioButton)?.Content as TextBlock)?.Text;
 
-        switch (radioText)
+        _cloud = radioText switch
         {
-            case "AWS":
-                _connectedClouds[AWS_POS] = await new AwsServiceFactory().CreateCloudService();
-
-                _cloud = _connectedClouds[AWS_POS];
-
-                break;
-
-            case "OVH Cloud":
-                // cloudServices[OVH_POS] = new OvhServiceFactory().CreateCloudService();
-                //
-                // selectedCloud = cloudServices[OVH_POS];
-
-                _cloud = null;
-
-                break;
-        }
+            "AWS" => await new AwsServiceFactory().CreateCloudService(),
+            "OVH Cloud" => null,
+            _ => await new AwsServiceFactory().CreateCloudService(),
+        };
 
         cbBuckets.Items.Clear();
 
@@ -138,7 +125,7 @@ public partial class MainWindow : Window
                 $"La conexión a {radioText} o los permisos han fallado. " +
                 "Revisa tus credenciales y vuelve a intentarlo.");
 
-            ((RadioButton)sender).IsChecked = false;
+            (sender as RadioButton)!.IsChecked = false;
             return;
         }
 
@@ -152,13 +139,27 @@ public partial class MainWindow : Window
     {
         if (lvBucketObjects.SelectedItem == null) return;
 
-        using var fbw = new FolderBrowserDialog();
+        using var fbw = new SaveFileDialog();
+        
+        fbw.Filter = "All files (*.*)|*.*";
+        fbw.FileName = lvBucketObjects.SelectedItem.ToString();
+        
+        var dialogResult = fbw.ShowDialog();
 
-        fbw.ShowDialog();
+        if (dialogResult != System.Windows.Forms.DialogResult.OK) return;
 
-        MessageBox.Show(fbw.SelectedPath + " | " + await _cloud?
+        var downloadedFile = _cloud?
             .DownloadFileAsync(cbBuckets.SelectedItem.ToString(),
                 lvBucketObjects.SelectedItem.ToString(),
-                fbw.SelectedPath));
+                fbw.FileName);
+
+        MessageBox.Show(fbw.FileName + " | " + await downloadedFile!);
+    }
+
+    private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+    {
+        var synchronizedFiles = new SynchronizedFiles();
+        synchronizedFiles.ShowDialog();
+        synchronizedFiles.Close();
     }
 }

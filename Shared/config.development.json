@@ -1,30 +1,32 @@
 {
   "accounts": {
-    "AWS": {
+    "Aws": {
       "access_key": "AKIATFVAOOY66R4JFUXW",
       "secret_access_key": "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"
     },
-    "OVH": {
+    "Ows": {
       "access_key": "",
       "secret_access_key": ""
     }
   },
   "synchronized_folders": [
     {
-      "local_path": "/home/username/Downloads",
-      "remote_path": [
-        {
-          "cloud_name": "AWS",
-          "bucket": "mybucket",
-          "path": "myfolder"
-        },
-        {
-          "service": "OVH",
-          "bucket": "mybucket",
-          "path": "myfolder"
-        }
+      "local_path": "/home/username/Downloads/file.jpeg",
+      "clouds": [
+        "Aws"
       ],
-      "backup_frequency": 3
+      "backup_frequency": 7200000,
+      "last_backup": 1682249197172,
+      "container": "mybucket"
+    },
+    {
+      "local_path": "/home/username/Downloads/fuelles.mp3",
+      "clouds": [
+        "Ovh"
+      ],
+      "backup_frequency": 3600000,
+      "last_backup": 1682249197172,
+      "container": "mybucket"
     }
   ]
 }

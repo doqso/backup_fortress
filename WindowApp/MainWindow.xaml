@@ -21,12 +21,11 @@
           </MenuItem>
         </MenuItem>
         <MenuItem Header="Ver">
-          <MenuItem Header="Sincronizados" />
+          <MenuItem Header="Sincronizados" Click="MenuItem_Click_1" />
         </MenuItem>
 
         <MenuItem Header="Administración de cuentas">
           <MenuItem Header="AWS" />
-          <MenuItem Header="OVH Cloud" />
         </MenuItem>
       </Menu>
     </DockPanel>
@@ -77,9 +76,8 @@
                   VerticalAlignment="Top"
                   Text="Buckets" SelectionChanged="cbBuckets_SelectionChanged" />
 
-        <Grid Grid.Column="1" HorizontalAlignment="Right" Width="130">
+        <Grid Grid.Column="1" HorizontalAlignment="Right" Margin="5 0">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
 
@@ -89,20 +87,15 @@
               <TextBlock Text="AWS" Margin="-4 0 0 0" />
             </RadioButton.Content>
           </RadioButton>
-          <RadioButton Grid.Column="1" GroupName="cloudProvider" Margin="5 0 0 0" Checked="RadioButton_Checked"
-                       VerticalAlignment="Center">
-            <RadioButton.Content>
-              <TextBlock Text="OVH Cloud" Margin="-4 0 0 0" />
-            </RadioButton.Content>
-          </RadioButton>
         </Grid>
       </Grid>
 
       <ListView Grid.Column="3" Grid.Row="2" x:Name="lvBucketObjects" AllowDrop="True" Drop="lvBucketObjects_Drop"
-                DragOver="lvBucketObjects_DragOver" d:ItemsSource="{d:SampleData ItemCount=5}">
+                DragOver="lvBucketObjects_DragOver" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="MenuItem_Click">
         <ListView.ContextMenu>
           <ContextMenu>
             <MenuItem Header="Descargar" Click="MenuItem_Click" />
+            <MenuItem Header="Borrar"/>
           </ContextMenu>
         </ListView.ContextMenu>
       </ListView>

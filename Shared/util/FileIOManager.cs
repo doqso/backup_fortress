@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace SharedLibrary.util
+namespace Shared.util
 {
     public class FileIOManager
     {

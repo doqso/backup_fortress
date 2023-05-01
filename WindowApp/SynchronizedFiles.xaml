@@ -1,0 +1,49 @@
+﻿<Window x:Class="WindowApp.SynchronizedFiles"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WindowApp"
+        xmlns:util="clr-namespace:Shared.util;assembly=Shared"
+        xmlns:models="clr-namespace:Shared.models;assembly=Shared"
+        mc:Ignorable="d"
+        Title="SynchronizedFiles" Height="250" Width="600">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"></RowDefinition>
+      <RowDefinition Height="*"></RowDefinition>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"></ColumnDefinition>
+      <ColumnDefinition Width="*"></ColumnDefinition>
+      <ColumnDefinition Width="Auto"></ColumnDefinition>
+    </Grid.ColumnDefinitions>
+
+    <Button x:Name="btDelete" Content="Eliminar fila ❌" ToolTip="Borrar" Background="#FFF97B7B" Click="btDelete_Click"/>
+    <Button Grid.Column="2" x:Name="btSave" Content="Guardar 👌" ToolTip="Guardar" Background="#FF7BC8F9" Click="btSave_Click"/>
+
+    <DataGrid Grid.Row="1" Grid.ColumnSpan="3" x:Name="DgFiles" AutoGenerateColumns="False">
+      <DataGrid.Columns>
+        <!-- <DataGridTextColumn Header="Local" Width="*" Binding="{Binding LocalPath}" /> -->
+        <DataGridTemplateColumn Header="Local" Width="*" >
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <Button x:Name="btLocalFile" Content="{Binding LocalPath}" Click="btLocalFile_Click">
+                <Button.Template>
+                  <ControlTemplate TargetType="{x:Type Button}">
+                    <ContentPresenter />
+                  </ControlTemplate>
+                </Button.Template>
+              </Button>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridCheckBoxColumn Header="AWS" Width="60" Binding="{Binding IsAws}" />
+        <DataGridCheckBoxColumn Header="OVH" Width="60" Binding="{Binding IsOvh}" />
+        <DataGridTextColumn Header="Freq.(Hora)" Width="90" Binding="{Binding BackupInHours}" />
+        <DataGridTextColumn Header="Contenedor" Width="100" Binding="{Binding Container}" />
+
+      </DataGrid.Columns>
+    </DataGrid>
+  </Grid>
+</Window>

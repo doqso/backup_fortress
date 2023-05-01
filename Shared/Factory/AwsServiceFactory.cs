@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using Amazon;
 using Amazon.S3;
-using SharedLibrary.Services;
-using SharedLibrary.Services.AWS;
-using SharedLibrary.util;
+using Shared.Services;
+using Shared.Services.AWS;
+using Shared.util;
 
-namespace SharedLibrary.Factory
+namespace Shared.Factory
 {
     public class AwsServiceFactory : CloudServiceFactory
     {
         public override async Task<ICloudService> CreateCloudService()
         {
-            var mySecrets = ConfigFileIO.ReadAccountCredentials("AWS");
+            var mySecrets = ConfigFileIO.ReadAccountCredentials("Aws");
 
             if (mySecrets == null) return null;
 

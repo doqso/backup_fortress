@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using SharedLibrary.Services;
+using Shared.Services;
 
-namespace SharedLibrary.Factory
+namespace Shared.Factory
 {
     public abstract class CloudServiceFactory
     {

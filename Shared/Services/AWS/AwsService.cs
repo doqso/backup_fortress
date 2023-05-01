@@ -1,28 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
-using SharedLibrary.util;
+using Shared.util;
 
-namespace SharedLibrary.Services.AWS
+namespace Shared.Services.AWS
 {
     public class AwsService : ICloudService
     {
+        public string Name { get; }
         private readonly IAmazonS3 _client;
 
         public AwsService(IAmazonS3 client)
         {
+            Name = "Aws";
             _client = client;
         }
 
-        public async Task<HttpStatusCode> UploadFileAsync(string bucketName, string objectName, string filePath)
+        public async Task<HttpStatusCode> UploadFileAsync(string bucket, string filePath)
         {
             var request = new PutObjectRequest
             {
-                BucketName = bucketName,
-                Key = objectName,
+                BucketName = bucket,
+                Key = Path.GetFileName(filePath),
                 FilePath = filePath
             };
 
@@ -41,7 +44,7 @@ namespace SharedLibrary.Services.AWS
             var response = await _client.GetObjectAsync(request);
             var responseStream = response.ResponseStream;
 
-            FileIOManager.Write(responseStream, Path.Combine(savePath, objectName));
+            FileIOManager.Write(responseStream, savePath);
 
             response.Dispose();
             responseStream.Dispose();

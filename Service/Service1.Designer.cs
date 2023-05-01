@@ -1,6 +1,6 @@
 ﻿namespace Service
 {
-	partial class Service1
+    sealed partial class Service1
 	{
 		/// <summary> 
 		/// Variable del diseñador necesaria.

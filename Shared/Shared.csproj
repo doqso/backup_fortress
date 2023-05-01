@@ -50,11 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Factory\AwsServiceFactory.cs" />
     <Compile Include="Factory\CloudServiceFactory.cs" />
     <Compile Include="models\CloudAccount.cs" />
-    <Compile Include="models\SynchronizedFolder.cs" />
+    <Compile Include="models\CloudFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
