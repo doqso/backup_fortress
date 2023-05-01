@@ -11,22 +11,32 @@
   },
   "synchronized_folders": [
     {
-      "local_path": "/home/username/Downloads/file.jpeg",
+      "local_path": "C:\\Users\\Doqso\\Downloads\\GiorgiGongadzeMeladzeA3_firmado.pdf",
       "clouds": [
-        "Aws"
+        "Aws",
+        "Ovh"
       ],
       "backup_frequency": 7200000,
       "last_backup": 1682249197172,
       "container": "mybucket"
     },
     {
-      "local_path": "/home/username/Downloads/fuelles.mp3",
+      "local_path": "C:\\Users\\Doqso\\Pictures\\mono.jpg",
       "clouds": [
         "Ovh"
       ],
       "backup_frequency": 3600000,
       "last_backup": 1682249197172,
       "container": "mybucket"
+    },
+    {
+      "local_path": "C:\\Users\\Doqso\\Pictures\\Foto DNI.jpg",
+      "clouds": [
+        "Aws"
+      ],
+      "backup_frequency": 10800000,
+      "last_backup": 0,
+      "container": "salas"
     }
   ]
 }

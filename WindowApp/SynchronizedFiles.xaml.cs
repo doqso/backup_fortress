@@ -18,7 +18,9 @@ using Microsoft.Win32;
 using Shared.util;
 using WindowApp.models;
 using Button = System.Windows.Controls.Button;
+using FileDialog = Microsoft.Win32.FileDialog;
 using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace WindowApp
 {
@@ -68,7 +70,19 @@ namespace WindowApp
         {
             try
             {
-                MessageBox.Show(((Button)sender).Content.ToString());
+                FileDialog fd = new OpenFileDialog();
+                if (!(fd.ShowDialog() ?? false)) return;
+                
+                var itemFromDataGrid = (CloudFileWrapper)DgFiles.SelectedItem;
+
+                var index = files.IndexOf(itemFromDataGrid);
+
+                itemFromDataGrid.LocalPath = fd.FileName;
+                files[index] = itemFromDataGrid;
+
+                DgFiles.CommitEdit();
+
+                CollectionViewSource.GetDefaultView(DgFiles.ItemsSource).Refresh();
             }
             catch (Exception ex)
             {

@@ -22,7 +22,8 @@
     <Button x:Name="btDelete" Content="Eliminar fila ❌" ToolTip="Borrar" Background="#FFF97B7B" Click="btDelete_Click"/>
     <Button Grid.Column="2" x:Name="btSave" Content="Guardar 👌" ToolTip="Guardar" Background="#FF7BC8F9" Click="btSave_Click"/>
 
-    <DataGrid Grid.Row="1" Grid.ColumnSpan="3" x:Name="DgFiles" AutoGenerateColumns="False">
+    <DataGrid Grid.Row="1" Grid.ColumnSpan="3" x:Name="DgFiles" AutoGenerateColumns="False"
+              ItemsSource="{Binding Path=., Mode=OneWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}">
       <DataGrid.Columns>
         <!-- <DataGridTextColumn Header="Local" Width="*" Binding="{Binding LocalPath}" /> -->
         <DataGridTemplateColumn Header="Local" Width="*" >
@@ -38,9 +39,9 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridCheckBoxColumn Header="AWS" Width="60" Binding="{Binding IsAws}" />
-        <DataGridCheckBoxColumn Header="OVH" Width="60" Binding="{Binding IsOvh}" />
-        <DataGridTextColumn Header="Freq.(Hora)" Width="90" Binding="{Binding BackupInHours}" />
+        <DataGridCheckBoxColumn Header="AWS" Width="50" Binding="{Binding IsAws}" />
+        <DataGridCheckBoxColumn Header="OVH" Width="50" Binding="{Binding IsOvh}" />
+        <DataGridTextColumn Header="Freq.(Hora)" Width="40" Binding="{Binding BackupInHours}" />
         <DataGridTextColumn Header="Contenedor" Width="100" Binding="{Binding Container}" />
 
       </DataGrid.Columns>
