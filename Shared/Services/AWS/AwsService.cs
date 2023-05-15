@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -44,7 +45,7 @@ namespace Shared.Services.AWS
             var response = await _client.GetObjectAsync(request);
             var responseStream = response.ResponseStream;
 
-            FileIOManager.Write(responseStream, savePath);
+            FilesIO.Write(responseStream, savePath);
 
             response.Dispose();
             responseStream.Dispose();
@@ -72,6 +73,26 @@ namespace Shared.Services.AWS
         {
             return (await _client.ListBucketsAsync())
                 .Buckets;
+        }
+
+        public async Task<HttpStatusCode> CreateBucketAsync(string bucketName)
+        {
+            var response = await _client.PutBucketAsync(bucketName);
+
+            return response.HttpStatusCode;
+        }
+
+        public async Task<HttpStatusCode> DeleteBucketAsync(string bucketName)
+        {
+            try
+            {
+                await _client.DeleteBucketAsync(bucketName);
+                return HttpStatusCode.OK;
+            } catch (Exception)
+            {
+                return HttpStatusCode.BadRequest;
+            }
+
         }
     }
 }

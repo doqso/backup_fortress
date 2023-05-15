@@ -21,7 +21,7 @@ namespace Test
         [Fact]
         public void GetSynchronizedFolderList()
         {
-            var syncFolders = ConfigFileIO.ReadSynchronizedFiles();
+            var syncFolders = ConfigIO.ReadSynchronizedFiles();
 
             output.WriteLine(syncFolders.ToString());
         }

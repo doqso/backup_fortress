@@ -10,11 +10,11 @@ using Shared.models;
 
 namespace Shared.util
 {
-    public class ConfigFileIO
+    public class ConfigIO
     {
         public static string ConfigFilePath { get; }
 
-        static ConfigFileIO()
+        static ConfigIO()
         {
 #if DEBUG
             var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.FullName;
@@ -39,12 +39,9 @@ namespace Shared.util
                 SecretAccessKey = credentialsToken.SelectToken("secret_access_key").ToString()
             };
 
-            if (cloudAccount.AccessKey.Trim().Length < 1
-                || cloudAccount.SecretAccessKey.Trim().Length < 1) return null;
-
             return cloudAccount;
         }
-
+        
         public static bool WriteAccountCredentials(CloudAccount account, string cloudName)
         {
             var configJson = ReadConfigurationJson();
@@ -62,7 +59,7 @@ namespace Shared.util
         {
             var configJson = ReadConfigurationJson();
 
-            var mainToken = (JArray)configJson.SelectToken("synchronized_folders")
+            var mainToken = (JArray)configJson.SelectToken("synchronized_files")
                             ?? JArray.Parse("[]");
 
             return JsonConvert.DeserializeObject<List<CloudFile>>(mainToken.ToString());
@@ -72,7 +69,7 @@ namespace Shared.util
         {
             var configJson = ReadConfigurationJson();
 
-            configJson.SelectToken("synchronized_folders")?
+            configJson.SelectToken("synchronized_files")?
                 .SingleOrDefault(c => c.Value<string>("local_path").Equals(cloudFiles.LocalPath))?
                 .Replace(JToken.FromObject(cloudFiles));
 
@@ -93,7 +90,7 @@ namespace Shared.util
                 synchronizedToken.Add(JToken.FromObject(cloudFile));
             }
 
-            configJson.SelectToken("synchronized_folders")?.Replace(synchronizedToken);
+            configJson.SelectToken("synchronized_files")?.Replace(synchronizedToken);
 
             File.WriteAllText(ConfigFilePath, configJson.ToString());
 

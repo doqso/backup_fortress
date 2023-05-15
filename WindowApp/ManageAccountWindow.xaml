@@ -1,0 +1,43 @@
+﻿<Window x:Class="WindowApp.ManageAccountWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WindowApp"
+        mc:Ignorable="d"
+        Title="ManageAccount" Height="250" Width="400">
+  <Grid>
+    <Grid Margin="20">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="5" />
+        <RowDefinition Height="25" />
+        <RowDefinition Height="15" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="5" />
+        <RowDefinition Height="25" />
+        <RowDefinition Height="5" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <TextBlock Text="Access key" />
+      <TextBox x:Name="tbAccessKey" Grid.Row="2" VerticalContentAlignment="Center" />
+      <TextBlock Grid.Row="4" Text="Secret acces key" />
+      <TextBox x:Name="tbSecretAccessKey" Grid.Row="6" VerticalContentAlignment="Center" />
+
+      <Grid Grid.Row="8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"></ColumnDefinition>
+          <ColumnDefinition Width="5"></ColumnDefinition>
+          <ColumnDefinition Width="*"></ColumnDefinition>
+          <ColumnDefinition Width="5"></ColumnDefinition>
+          <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="btAccept" Grid.Column="0" VerticalAlignment="Bottom" Content="Aceptar" Click="btAccept_Click" />
+        <Button x:Name="btTest" Grid.Column="2" VerticalAlignment="Bottom" Content="Probar conexión" Click="btTest_Click" />
+        <Button x:Name="btCancel" Grid.Column="4" VerticalAlignment="Bottom" Content="Cancelar" Click="btCancel_Click" />
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

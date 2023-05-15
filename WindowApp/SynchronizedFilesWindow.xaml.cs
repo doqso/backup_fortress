@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Microsoft.Win32;
 using Shared.util;
 using WindowApp.models;
-using Button = System.Windows.Controls.Button;
 using FileDialog = Microsoft.Win32.FileDialog;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -27,20 +16,26 @@ namespace WindowApp
     /// <summary>
     /// Lógica de interacción para SynchronizedFiles.xaml
     /// </summary>
-    public partial class SynchronizedFiles : Window
+    public partial class SynchronizedFilesWindow : Window
     {
         private readonly ObservableCollection<CloudFileWrapper> files;
+        private bool isChanged = false;
 
-        public SynchronizedFiles()
+        public SynchronizedFilesWindow()
         {
             InitializeComponent();
 
             files = new ObservableCollection<CloudFileWrapper>();
 
-            ConfigFileIO.ReadSynchronizedFiles()
+            ConfigIO.ReadSynchronizedFiles()
                 .Select(x => new CloudFileWrapper(x))
                 .ToList()
                 .ForEach(d => files.Add(d));
+
+            files.CollectionChanged += (sender, args) =>
+            {
+                isChanged = true;
+            };
 
             DgFiles.ItemsSource = files;
         }
@@ -49,9 +44,11 @@ namespace WindowApp
         {
             var cloudFiles = files.Select(x => x.GetCloudFile()).ToList();
 
-            ConfigFileIO.WriteSynchronizedFiles(cloudFiles);
+            ConfigIO.WriteSynchronizedFiles(cloudFiles);
 
             MessageBox.Show("Guardado ✔", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            isChanged = false;
         }
 
         private void btDelete_Click(object sender, RoutedEventArgs e)
@@ -71,8 +68,11 @@ namespace WindowApp
             try
             {
                 FileDialog fd = new OpenFileDialog();
+                fd.Title = "Selecciona un archivo";
+                fd.InitialDirectory = System.IO.Path.GetDirectoryName((sender as Button)?.Content.ToString());
+
                 if (!(fd.ShowDialog() ?? false)) return;
-                
+
                 var itemFromDataGrid = (CloudFileWrapper)DgFiles.SelectedItem;
 
                 var index = files.IndexOf(itemFromDataGrid);
@@ -88,6 +88,19 @@ namespace WindowApp
             {
                 // ignored
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (isChanged)
+            {
+                var result = MessageBox.Show("Hay cambios pendientes de guardar. Salir sin guardar?", "Finalizar", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+            base.OnClosing(e);
         }
     }
 }

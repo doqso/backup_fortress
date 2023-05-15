@@ -4,33 +4,32 @@
       "access_key": "AKIATFVAOOY66R4JFUXW",
       "secret_access_key": "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"
     },
-    "Ows": {
+    "Ovh": {
       "access_key": "",
       "secret_access_key": ""
     }
   },
-  "synchronized_folders": [
+  "synchronized_files": [
     {
       "local_path": "C:\\Users\\Doqso\\Downloads\\GiorgiGongadzeMeladzeA3_firmado.pdf",
       "clouds": [
-        "Aws",
-        "Ovh"
+        "Aws"
       ],
       "backup_frequency": 7200000,
       "last_backup": 1682249197172,
-      "container": "mybucket"
+      "container": "backupfortressbucket"
     },
     {
-      "local_path": "C:\\Users\\Doqso\\Pictures\\mono.jpg",
+      "local_path": "C:\\Users\\Doqso\\Pictures\\Saved Pictures\\pexels-lukas-574071.jpg",
       "clouds": [
         "Ovh"
       ],
       "backup_frequency": 3600000,
       "last_backup": 1682249197172,
-      "container": "mybucket"
+      "container": "backupfortressbucket"
     },
     {
-      "local_path": "C:\\Users\\Doqso\\Pictures\\Foto DNI.jpg",
+      "local_path": "C:\\Users\\Doqso\\Pictures\\Saved Pictures\\wallpapersden.com_colorful-clouds-abstract-4k_3840x2160.jpg",
       "clouds": [
         "Aws"
       ],

@@ -14,18 +14,17 @@
 
     <DockPanel VerticalAlignment="Top">
       <Menu>
-        <MenuItem Header="Editar">
-          <MenuItem Header="Cloud" Icon="☁">
-            <MenuItem Header="Nuevo contenedor" Icon="➕" Foreground="#FF006532" />
-            <MenuItem Header="Borrar contenedor" Icon="➖" Foreground="#FF900303" />
-          </MenuItem>
-        </MenuItem>
         <MenuItem Header="Ver">
-          <MenuItem Header="Sincronizados" Click="MenuItem_Click_1" />
+          <MenuItem x:Name="btSyncFiles" Header="Sincronizados" Icon="♻" Click="btSyncFiles_Click" />
+        </MenuItem>
+        
+        <MenuItem Header="Contenedores">
+          <MenuItem x:Name="itCreateBucket" Header="Nuevo contenedor" Icon="➕" Click="itCreateBucket_Click" />
+          <MenuItem x:Name="itDeleteBucket" Header="Borrar contenedor" Icon="➖" Click="itDeleteBucket_Click" />
         </MenuItem>
 
-        <MenuItem Header="Administración de cuentas">
-          <MenuItem Header="AWS" />
+        <MenuItem Header="Cuentas">
+          <MenuItem x:Name="btAwsAccount" Header="AWS" Icon="☁" Click="btAwsAccount_Click" />
         </MenuItem>
       </Menu>
     </DockPanel>
@@ -91,11 +90,12 @@
       </Grid>
 
       <ListView Grid.Column="3" Grid.Row="2" x:Name="lvBucketObjects" AllowDrop="True" Drop="lvBucketObjects_Drop"
-                DragOver="lvBucketObjects_DragOver" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="MenuItem_Click">
+                DragOver="lvBucketObjects_DragOver" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="idDownloadBucketItem_Click">
         <ListView.ContextMenu>
           <ContextMenu>
-            <MenuItem Header="Descargar" Click="MenuItem_Click" />
-            <MenuItem Header="Borrar"/>
+            <MenuItem x:Name="idDownloadBucketItem" Header="Descargar" Click="idDownloadBucketItem_Click" />
+            <MenuItem x:Name="itUpdateBucketList" Header="Actualizar lista" Click="itUpdateBucketList_Click" />
+            <MenuItem x:Name="itDeleteBucketItem" Header="Borrar" Click="itDeleteBucketItem_Click"/>
           </ContextMenu>
         </ListView.ContextMenu>
       </ListView>

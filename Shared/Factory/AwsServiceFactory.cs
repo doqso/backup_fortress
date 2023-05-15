@@ -9,13 +9,12 @@ namespace Shared.Factory
 {
     public class AwsServiceFactory : CloudServiceFactory
     {
-        public override async Task<ICloudService> CreateCloudService()
+        public override async Task<ICloudService> CreateCloudService(string accessKey, string secretAccessKey)
         {
-            var mySecrets = ConfigFileIO.ReadAccountCredentials("Aws");
+            if (accessKey == null || accessKey.Trim().Length < 1 ||
+                secretAccessKey == null || secretAccessKey.Trim().Length < 1) return null;
 
-            if (mySecrets == null) return null;
-
-            var client = new AmazonS3Client(mySecrets.AccessKey, mySecrets.SecretAccessKey, RegionEndpoint.EUSouth2);
+            var client = new AmazonS3Client(accessKey, secretAccessKey, RegionEndpoint.EUSouth2);
             var cloudService = new AwsService(client);
 
             return await CheckConnection(cloudService) ? cloudService : null;

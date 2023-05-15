@@ -21,19 +21,17 @@ namespace Service
         public Service1()
         {
             InitializeComponent();
-            
+
             EventLog.Source = "Backup Fortress";
-            EventLog.WriteEntry("config file: " + ConfigFileIO.ConfigFilePath, EventLogEntryType.Information);
+            EventLog.WriteEntry("config file: " + ConfigIO.ConfigFilePath, EventLogEntryType.Information);
         }
 
         protected override async void OnStart(string[] args)
         {
-            CloudServices = Enumerable.Empty<ICloudService>().ToList();
-            WrappedFiles = Enumerable.Empty<CloudFileWrapper>().ToList();
-
+            CloudServices = new List<ICloudService>();
             await AddCloudServices();
 
-            WrappedFiles = ConfigFileIO.ReadSynchronizedFiles()
+            WrappedFiles = ConfigIO.ReadSynchronizedFiles()
                 .Select(f => new CloudFileWrapper(f, CloudServices)).ToList();
 
             EventLog.WriteEntry("Files to backup: " + WrappedFiles.Count, EventLogEntryType.Information);
@@ -64,8 +62,10 @@ namespace Service
 
         private async Task AddCloudServices()
         {
-            var awsService = await new AwsServiceFactory().CreateCloudService();
-
+            var credentials = ConfigIO.ReadAccountCredentials("Aws");
+            
+            var awsService = await new AwsServiceFactory()
+                .CreateCloudService(credentials.AccessKey, credentials.SecretAccessKey);
             if (awsService != null) CloudServices.ToList().Add(awsService);
 
             //... Add other cloud services here
