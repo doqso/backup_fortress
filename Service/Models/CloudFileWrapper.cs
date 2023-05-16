@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using Shared.models;
 using Shared.Services;
 using Shared.util;
 using Timer = System.Timers.Timer;
 
-namespace Service.util
+namespace Service.Models
 {
     public class CloudFileWrapper
     {
@@ -24,35 +26,33 @@ namespace Service.util
         public void StartBackup()
         {
             MyTimer.Interval = File.NextBackupMilliseconds();
-            MyTimer.Elapsed += DoBackup;
+            MyTimer.Elapsed += (sender, e) => new Thread(() => DoBackup());
             MyTimer.Start();
         }
 
-        public void StopBackup()
-        {
-            MyTimer.Stop();
-        }
-
-        private async void DoBackup(object sender, EventArgs e)
+        private async void DoBackup()
         {
             var backupMadeAtLeastOnce = false;
+            var localPath = File.LocalPath;
+            var isDirectory = Directory.Exists(localPath);
 
             try
             {
+                if (isDirectory) FilesIO.CompressAndWrite(ref localPath);
+
                 foreach (var cloudPath in File.Clouds)
                 {
                     var cloudService = CloudServices.Single(c => c.Name.Equals(cloudPath));
 
-                    var bucket = File.Container;
-                    var localPath = File.LocalPath;
-
                     if (cloudService == null) continue;
 
-                    await cloudService.UploadFileAsync(bucket, localPath);
+                    await cloudService.UploadFileAsync(File.Container, localPath);
 
                     backupMadeAtLeastOnce = true;
                 }
-
+                
+                if (isDirectory) FilesIO.RemoveFoldersBackup(localPath);
+                
                 if (!backupMadeAtLeastOnce) throw new Exception();
 
                 File.UpdateLastBackup();
@@ -65,6 +65,11 @@ namespace Service.util
             {
                 if (!backupMadeAtLeastOnce) StopBackup();
             }
+        }
+
+        public void StopBackup()
+        {
+            MyTimer.Stop();
         }
     }
 }

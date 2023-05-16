@@ -27,11 +27,9 @@ namespace Shared.util
             writer.Close();
         }
 
-        public static Task CompressAndWrite(ref string folderPath)
+        public static void CompressAndWrite(ref string folderPath)
         {
             ZipFile.CreateFromDirectory(folderPath, folderPath += ".zip");
-
-            return Task.CompletedTask;
         }
 
         public static void RemoveFoldersBackup(string filePath)

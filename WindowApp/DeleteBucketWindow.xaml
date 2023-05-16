@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WindowApp"
         mc:Ignorable="d"
-        Title="DeleteBucketWindow" Height="70" Width="350">
+        Title="Borrar contenedor" Height="100" Width="350">
   <Grid Margin="5" VerticalAlignment="Center">
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="Auto"/>
@@ -19,9 +21,11 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <ComboBox x:Name="cbBuckets" />
+    <Label x:Name="laService" Content="Servicio"/>
 
-    <Button x:Name="btDeleteBucket" Content="Borrar" Grid.Column="2" Width="60" Click="btDeleteBucket_Click"/>
-    <Button x:Name="btCancel" Content="Cancelar" Grid.Column="4" Width="60" Click="btCancel_Click"/>
+    <ComboBox x:Name="cbBuckets" Grid.Column="2"/>
+
+    <Button x:Name="btDeleteBucket" Content="Borrar" Grid.Column="4" Width="60" Click="btDeleteBucket_Click"/>
+    <Button x:Name="btCancel" Content="Cancelar" Grid.Column="6" Width="60" Click="btCancel_Click"/>
   </Grid>
 </Window>

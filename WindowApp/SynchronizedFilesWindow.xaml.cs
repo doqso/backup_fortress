@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Forms;
+using Microsoft.Win32;
 using Shared.util;
 using WindowApp.models;
 using FileDialog = Microsoft.Win32.FileDialog;
@@ -67,17 +69,17 @@ namespace WindowApp
         {
             try
             {
-                FileDialog fd = new OpenFileDialog();
-                fd.Title = "Selecciona un archivo";
-                fd.InitialDirectory = System.IO.Path.GetDirectoryName((sender as Button)?.Content.ToString());
+                var fd = new FolderBrowserDialog();
 
-                if (!(fd.ShowDialog() ?? false)) return;
+                fd.InitialDirectory = System.IO.Path.GetDirectoryName((sender as System.Windows.Controls.Button)?.Content.ToString());
+
+                if (fd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
                 var itemFromDataGrid = (CloudFileWrapper)DgFiles.SelectedItem;
 
                 var index = files.IndexOf(itemFromDataGrid);
 
-                itemFromDataGrid.LocalPath = fd.FileName;
+                itemFromDataGrid.LocalPath = fd.SelectedPath;
                 files[index] = itemFromDataGrid;
 
                 DgFiles.CommitEdit();

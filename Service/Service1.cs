@@ -6,7 +6,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using Service.util;
+using Service.Models;
 using Shared.Factory;
 using Shared.Services;
 using Shared.util;

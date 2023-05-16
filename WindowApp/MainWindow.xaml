@@ -89,16 +89,16 @@
         </Grid>
       </Grid>
 
-      <ListView Grid.Column="3" Grid.Row="2" x:Name="lvBucketObjects" AllowDrop="True" Drop="lvBucketObjects_Drop"
-                DragOver="lvBucketObjects_DragOver" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="idDownloadBucketItem_Click">
-        <ListView.ContextMenu>
+      <TreeView Grid.Column="3" Grid.Row="2" x:Name="tvBucketObjects" AllowDrop="True" Drop="tvBucketObjects_Drop"
+                DragOver="tvBucketObjects_DragOver" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="idDownloadBucketItem_Click">
+        <TreeView.ContextMenu>
           <ContextMenu>
             <MenuItem x:Name="idDownloadBucketItem" Header="Descargar" Click="idDownloadBucketItem_Click" />
             <MenuItem x:Name="itUpdateBucketList" Header="Actualizar lista" Click="itUpdateBucketList_Click" />
             <MenuItem x:Name="itDeleteBucketItem" Header="Borrar" Click="itDeleteBucketItem_Click"/>
           </ContextMenu>
-        </ListView.ContextMenu>
-      </ListView>
+        </TreeView.ContextMenu>
+      </TreeView>
 
     </Grid>
 

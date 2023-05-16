@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -21,13 +22,14 @@ namespace Shared.Services.AWS
             _client = client;
         }
 
+        // Need to create thread to wrap this method
         public async Task<HttpStatusCode> UploadFileAsync(string bucket, string filePath)
         {
             var request = new PutObjectRequest
             {
                 BucketName = bucket,
                 Key = Path.GetFileName(filePath),
-                FilePath = filePath
+                FilePath = filePath,
             };
 
             return (await _client.PutObjectAsync(request)).HttpStatusCode;
@@ -65,6 +67,13 @@ namespace Shared.Services.AWS
 
         public async Task<List<S3Object>> ListFilesAsync(string bucketName)
         {
+            var resp = await _client.ListVersionsAsync(bucketName);
+
+            foreach(var vers in resp.Versions)
+            {
+                Console.WriteLine(vers.LastModified + " | " + vers.VersionId);
+            }
+
             return (await _client.ListObjectsAsync(bucketName))
                 .S3Objects;
         }
@@ -79,6 +88,17 @@ namespace Shared.Services.AWS
         {
             var response = await _client.PutBucketAsync(bucketName);
 
+            var request = new PutBucketVersioningRequest
+            {
+                BucketName = bucketName,
+                VersioningConfig = new S3BucketVersioningConfig
+                {
+                    Status = VersionStatus.Enabled
+                }
+            };
+
+            await _client.PutBucketVersioningAsync(request);
+
             return response.HttpStatusCode;
         }
 
@@ -88,7 +108,8 @@ namespace Shared.Services.AWS
             {
                 await _client.DeleteBucketAsync(bucketName);
                 return HttpStatusCode.OK;
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 return HttpStatusCode.BadRequest;
             }

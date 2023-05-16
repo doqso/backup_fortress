@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -83,16 +84,18 @@ public partial class MainWindow : Window
 
     private async void cbBuckets_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        lvBucketObjects.Items.Clear();
+        tvBucketObjects.Items.Clear();
 
         var selectedBucket = cbBuckets.SelectedItem;
         if (selectedBucket == null || Cloud == null) return;
 
+
         (await Cloud.ListFilesAsync(selectedBucket.ToString()))
-            .ForEach(o => lvBucketObjects.Items.Add(o.Key));
+            .Select(o => new TreeViewItem { Header = o.Key, Uid = o.ETag }).ToList()
+            .ForEach(o => tvBucketObjects.Items.Add(o));
     }
 
-    private async void lvBucketObjects_Drop(object sender, DragEventArgs e)
+    private async void tvBucketObjects_Drop(object sender, DragEventArgs e)
     {
         if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
 
@@ -107,17 +110,24 @@ public partial class MainWindow : Window
         if (files == null || files.Length < 1) return;
 
         var filePath = files[0];
-        var isDirectory = Directory.Exists(filePath);
-        if (isDirectory) await FilesIO.CompressAndWrite(ref filePath);
 
-        await Cloud?.UploadFileAsync(cbBuckets.SelectedItem.ToString(), filePath);
+        var selectedItem = cbBuckets.SelectedItem.ToString();
 
-        if (isDirectory) FilesIO.RemoveFoldersBackup(filePath);
+        new Thread(async () =>
+        {
+            var isDirectory = Directory.Exists(filePath);
 
-        cbBuckets_SelectionChanged(sender, null);
+            if (isDirectory) FilesIO.CompressAndWrite(ref filePath);
+
+            await Cloud?.UploadFileAsync(selectedItem, filePath);
+            
+            if (isDirectory) FilesIO.RemoveFoldersBackup(filePath);
+
+            Dispatcher.Invoke(() => cbBuckets_SelectionChanged(sender, null));
+        }).Start();
     }
 
-    private void lvBucketObjects_DragOver(object sender, DragEventArgs e)
+    private void tvBucketObjects_DragOver(object sender, DragEventArgs e)
     {
         if (cbBuckets.SelectedItem != null) return;
 
@@ -165,12 +175,12 @@ public partial class MainWindow : Window
 
     private async void idDownloadBucketItem_Click(object sender, RoutedEventArgs e)
     {
-        if (lvBucketObjects.SelectedItem == null) return;
+        if (tvBucketObjects.SelectedItem == null) return;
 
         using var fbw = new SaveFileDialog();
 
         fbw.Filter = "All files (*.*)|*.*";
-        fbw.FileName = lvBucketObjects.SelectedItem.ToString();
+        fbw.FileName = tvBucketObjects.SelectedItem.ToString();
 
         var dialogResult = fbw.ShowDialog();
 
@@ -179,7 +189,7 @@ public partial class MainWindow : Window
         var downloadedFile = await Cloud?
             .DownloadFileAsync(
                 cbBuckets.SelectedItem.ToString(),
-                lvBucketObjects.SelectedItem.ToString(),
+                tvBucketObjects.SelectedItem.ToString(),
                 fbw.FileName);
 
         if (downloadedFile.Equals(HttpStatusCode.OK))
@@ -219,7 +229,7 @@ public partial class MainWindow : Window
         var selectedBucket = cbBuckets.SelectedItem;
         if (selectedBucket == null || Cloud == null) return;
 
-        var selectedItem = lvBucketObjects.SelectedItem.ToString();
+        var selectedItem = tvBucketObjects.SelectedItem.ToString();
         if (selectedItem == null) return;
 
         await Cloud.DeleteFileAsync(selectedBucket.ToString(), selectedItem);
@@ -242,6 +252,8 @@ public partial class MainWindow : Window
     private void itDeleteBucket_Click(object sender, RoutedEventArgs e)
     {
         DeleteBucketWindow wnd = new DeleteBucketWindow(cbBuckets.Items.OfType<string>());
+
+        wnd.laService.Content = Cloud?.Name;
 
         var result = wnd.ShowDialog();
 
