@@ -20,7 +20,7 @@
       "container": "backupfortressbucket"
     },
     {
-      "local_path": "C:\\Users\\Doqso\\Pictures\\Saved Pictures\\pexels-lukas-574071.jpg",
+      "local_path": "C:\\Users\\Doqso\\Pictures\\Saved Pictures",
       "clouds": [
         "Ovh"
       ],
@@ -33,7 +33,7 @@
       "clouds": [
         "Aws"
       ],
-      "backup_frequency": 10800000,
+      "backup_frequency": 3600000,
       "last_backup": 0,
       "container": "salas"
     }

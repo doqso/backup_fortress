@@ -14,6 +14,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Amazon.S3.Model;
 using Shared.Factory;
 using Shared.Services;
 using Shared.util;
@@ -91,8 +92,17 @@ public partial class MainWindow : Window
 
 
         (await Cloud.ListFilesAsync(selectedBucket.ToString()))
-            .Select(o => new TreeViewItem { Header = o.Key, Uid = o.ETag }).ToList()
-            .ForEach(o => tvBucketObjects.Items.Add(o));
+            .Select(o =>
+            {
+                var root = new TreeViewItem { Header = o.Key.Key, Uid = o.Key.VersionId, Tag = o.Key };
+
+                o.Value.ForEach(v =>
+                root.Items
+                .Add(new TreeViewItem { Header = v.Key + " | " + v.LastModified, Uid = v.VersionId, Tag = v }));
+
+                return root;
+            }).ToList()
+            .ForEach(e => tvBucketObjects.Items.Add(e));
     }
 
     private async void tvBucketObjects_Drop(object sender, DragEventArgs e)
@@ -120,7 +130,7 @@ public partial class MainWindow : Window
             if (isDirectory) FilesIO.CompressAndWrite(ref filePath);
 
             await Cloud?.UploadFileAsync(selectedItem, filePath);
-            
+
             if (isDirectory) FilesIO.RemoveFoldersBackup(filePath);
 
             Dispatcher.Invoke(() => cbBuckets_SelectionChanged(sender, null));
@@ -177,10 +187,12 @@ public partial class MainWindow : Window
     {
         if (tvBucketObjects.SelectedItem == null) return;
 
+        var item = (tvBucketObjects.SelectedItem as TreeViewItem)?.Tag as S3ObjectVersion;
+
         using var fbw = new SaveFileDialog();
 
         fbw.Filter = "All files (*.*)|*.*";
-        fbw.FileName = tvBucketObjects.SelectedItem.ToString();
+        fbw.FileName = item?.Key.ToString();
 
         var dialogResult = fbw.ShowDialog();
 
@@ -189,7 +201,8 @@ public partial class MainWindow : Window
         var downloadedFile = await Cloud?
             .DownloadFileAsync(
                 cbBuckets.SelectedItem.ToString(),
-                tvBucketObjects.SelectedItem.ToString(),
+                item?.Key.ToString(),
+                item?.VersionId,
                 fbw.FileName);
 
         if (downloadedFile.Equals(HttpStatusCode.OK))
@@ -229,10 +242,10 @@ public partial class MainWindow : Window
         var selectedBucket = cbBuckets.SelectedItem;
         if (selectedBucket == null || Cloud == null) return;
 
-        var selectedItem = tvBucketObjects.SelectedItem.ToString();
+        var selectedItem = (tvBucketObjects.SelectedItem as TreeViewItem)?.Tag as S3ObjectVersion;
         if (selectedItem == null) return;
 
-        await Cloud.DeleteFileAsync(selectedBucket.ToString(), selectedItem);
+        await Cloud.DeleteFileAsync(selectedBucket.ToString(), selectedItem.Key.ToString(), selectedItem.VersionId);
 
         cbBuckets_SelectionChanged(sender, null);
     }
