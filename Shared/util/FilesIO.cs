@@ -29,10 +29,12 @@ namespace Shared.util
 
         public static void CompressAndWrite(ref string folderPath)
         {
+            if (File.Exists(folderPath + ".zip")) File.Delete(folderPath + ".zip");
+
             ZipFile.CreateFromDirectory(folderPath, folderPath += ".zip");
         }
 
-        public static void RemoveFoldersBackup(string filePath)
+        public static void DeleteFile(string filePath)
         {
             File.Delete(filePath);
         }

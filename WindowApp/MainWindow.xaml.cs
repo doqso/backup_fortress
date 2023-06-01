@@ -92,13 +92,13 @@ public partial class MainWindow : Window
 
 
         (await Cloud.ListFilesAsync(selectedBucket.ToString()))
-            .Select(o =>
+            .Select(dictionary =>
             {
-                var root = new TreeViewItem { Header = o.Key.Key, Uid = o.Key.VersionId, Tag = o.Key };
+                var root = new TreeViewItem { Header = dictionary.Key.Key, Uid = dictionary.Key.VersionId, Tag = dictionary.Key };
 
-                o.Value.ForEach(v =>
-                root.Items
-                .Add(new TreeViewItem { Header = v.Key + " | " + v.LastModified, Uid = v.VersionId, Tag = v }));
+                dictionary.Value.ForEach(
+                    version => root.Items.Add(
+                        new TreeViewItem { Header = version.Key + " | " + version.LastModified, Uid = version.VersionId, Tag = version }));
 
                 return root;
             }).ToList()
@@ -131,7 +131,7 @@ public partial class MainWindow : Window
 
             await Cloud?.UploadFileAsync(selectedItem, filePath);
 
-            if (isDirectory) FilesIO.RemoveFoldersBackup(filePath);
+            if (isDirectory) FilesIO.DeleteFile(filePath);
 
             Dispatcher.Invoke(() => cbBuckets_SelectionChanged(sender, null));
         }).Start();

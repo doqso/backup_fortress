@@ -12,8 +12,9 @@ namespace Shared.Factory
         public override async Task<ICloudService> CreateCloudService(string accessKey, string secretAccessKey)
         {
             if (accessKey == null || accessKey.Trim().Length < 1 ||
-                secretAccessKey == null || secretAccessKey.Trim().Length < 1) return null;
-
+                secretAccessKey == null || secretAccessKey.Trim().Length < 1) 
+                return null;
+             
             var client = new AmazonS3Client(accessKey, secretAccessKey, RegionEndpoint.EUSouth2);
             var cloudService = new AwsService(client);
 

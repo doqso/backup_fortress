@@ -20,9 +20,8 @@ namespace Shared.util
             var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.FullName;
             ConfigFilePath = Path.Combine(projectRoot, "Shared", "config.development.json");
 #else
-            var projectRoot = Directory.GetParent(new Uri(Assembly.GetExecutingAssembly().Location).OriginalString)
-                .FullName;
-            ConfigFilePath = Path.Combine(projectRoot, "config.json");
+            var projectRoot = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); 
+            ConfigFilePath = Path.Combine(projectRoot, "Backup Fortress", "config.json");
 #endif
         }
 
@@ -41,7 +40,7 @@ namespace Shared.util
 
             return cloudAccount;
         }
-        
+
         public static bool WriteAccountCredentials(CloudAccount account, string cloudName)
         {
             var configJson = ReadConfigurationJson();

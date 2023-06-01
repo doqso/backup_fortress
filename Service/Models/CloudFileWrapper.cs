@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Timers;
 using Shared.models;
 using Shared.Services;
 using Shared.util;
@@ -15,61 +17,66 @@ namespace Service.Models
         private Timer MyTimer { get; }
         private IReadOnlyCollection<ICloudService> CloudServices { get; }
         private CloudFile File { get; }
+        private EventLog EventLog { get; set; }
 
-        public CloudFileWrapper(CloudFile file, IReadOnlyCollection<ICloudService> cloudServices)
+        public CloudFileWrapper(CloudFile file, IReadOnlyCollection<ICloudService> cloudServices, EventLog eventLog)
         {
             File = file;
             MyTimer = new Timer();
             CloudServices = cloudServices;
+            EventLog = eventLog;
         }
 
         public void StartBackup()
         {
             MyTimer.Interval = File.NextBackupMilliseconds();
-            MyTimer.Elapsed += (sender, e) => new Thread(() => DoBackup());
+            MyTimer.Elapsed += MakeBackup;
             MyTimer.Start();
         }
 
-        private async void DoBackup()
+        private async void MakeBackup(object sender, ElapsedEventArgs e)
         {
-            var backupMadeAtLeastOnce = false;
+            MyTimer.Stop();
+
             var localPath = File.LocalPath;
             var isDirectory = Directory.Exists(localPath);
 
             try
             {
+                var cloudMatches = CloudServices.Where(d => File.Clouds.Contains(d.Name));
+                if (!cloudMatches.Any()) throw new Exception();
+
+                EventLog.WriteEntry("Start comppressing: " + localPath, EventLogEntryType.Information);
+
                 if (isDirectory) FilesIO.CompressAndWrite(ref localPath);
 
-                foreach (var cloudPath in File.Clouds)
+                EventLog.WriteEntry("File uploading: " + localPath, EventLogEntryType.Information);
+
+                foreach (var cloudService in cloudMatches)
                 {
-                    var cloudService = CloudServices.Single(c => c.Name.Equals(cloudPath));
-
-                    if (cloudService == null) continue;
-
                     await cloudService.UploadFileAsync(File.Container, localPath);
-
-                    backupMadeAtLeastOnce = true;
                 }
-                
-                if (isDirectory) FilesIO.RemoveFoldersBackup(localPath);
-                
-                if (!backupMadeAtLeastOnce) throw new Exception();
+
+                if (isDirectory) FilesIO.DeleteFile(localPath);
+
+                EventLog.WriteEntry("Backup made: " + localPath, EventLogEntryType.Information);
 
                 File.UpdateLastBackup();
                 ConfigIO.WriteSynchronizedFile(File);
                 MyTimer.Interval = File.NextBackupMilliseconds();
 
-
+                MyTimer.Start();
             }
             catch (Exception ex)
             {
-                if (!backupMadeAtLeastOnce) StopBackup();
+                StopBackup();
             }
         }
 
         public void StopBackup()
         {
             MyTimer.Stop();
+            EventLog.WriteEntry("Stop backup: " + File.LocalPath, EventLogEntryType.Information);
         }
     }
 }

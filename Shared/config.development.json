@@ -1,12 +1,12 @@
 {
   "accounts": {
     "Aws": {
-      "access_key": "AKIATFVAOOY66R4JFUXW",
-      "secret_access_key": "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"
-    },
-    "Ovh": {
       "access_key": "",
       "secret_access_key": ""
+    },
+    "Ovh": {
+      "access_key": "AKIATFVAOOY66R4JFUXW",
+      "secret_access_key": "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"
     }
   },
   "synchronized_files": [
