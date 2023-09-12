@@ -140,3 +140,44 @@ establecida de cada una de ellas
 la nube, modifica el archivo de configuración actualizando la fecha de la 
 última copia realizada.
 >1. Reconfigura el temporizador para la siguiente copia
+
+## Manual de instalación
+1. El archivo que nos instalará toda la aplicación será “Setup1.msi”, el cual debemos 
+ejecutarlo y presionar siguiente hasta que comience la instalación.
+
+![instalacion](./readme/setup_1.png "instalacion")
+
+2. Antes de proceder con la instalación normal, nos pedirá que introduzcamos el nombre 
+de usuario y contraseñas del usuario del pc
+
+![instalacion](./readme/setup_2.png "instalacion")
+
+3. Por lo tanto, en el lateral superior izquierdo, nos aparecerá la siguiente ventana
+
+![instalacion](./readme/setup_3.png "instalacion")
+
+4. Escribir únicamente el nombre del usuario no bastaría, debemos introducir el 
+nombre del equipo también, y esto se obtiene en la siguiente ventana
+
+![instalacion](./readme/setup_4.png "instalacion")
+![instalacion](./readme/setup_5.png "instalacion")
+
+5. Una vez conocemos el nombre del equipo y sabemos el nombre de nuestro usuario y 
+contraseña, procedemos a introducirlos y continuar con la instalación
+
+Formato: **nombre_del_equipo\nombre_del_usuario**
+
+![instalacion](./readme/setup_6.png "instalacion")
+
+6. Inmediatamente nos aparecerá la siguiente ventana de que se ha instalado la 
+aplicación correctamente
+
+![instalacion](./readme/setup_7.png "instalacion")
+
+Si aparece cualquier otra ventana y da un fallo de instalación, revisa que hayas 
+introducido correctamente el nombre del usuario y la contraseña.
+
+Es necesario hacerlo de esta manera ya que el servicio necesita tener acceso a la 
+carpeta del usuario para guardar allí el archivo de configuración, puesto que diferentes 
+usuarios pueden tener diferentes archivos de configuración y no deben 
+entremezclarse.
