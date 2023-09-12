@@ -22,7 +22,7 @@ La aplicación ha sido desarrollada con diferentes capas de abstracción, tenien
 librería en común entre la aplicación de servicio y la aplicación de Windows, el cual 
 permite la escritura de archivos, compresión, trabajar con los servicios en la nube, etc.
 
-![Spacenames](./Proyecto_final/Diagrama_spacenames.png "spacenames")
+![Spacenames](./readme/Diagrama_spacenames.png "spacenames")
 
 ### <p style="text-align:center">Aplicación con interfaz de usuario</p>
 La aplicación de Windows será la cara visible para el usuario, teniendo diferentes 
@@ -44,7 +44,7 @@ por tanto será necesario que indiquemos primero unas credenciales de acceso
 correctas para cada servicio de la nube del que disponemos, e indicar las carpetas a 
 los que realizaremos las copias junto al resto de datos.
 
-![visor_de_eventos](./Proyecto_final/capturas/visor_de_eventos.png "visor_de_eventos")
+![visor_de_eventos](./readme/visor_de_eventos.png "visor_de_eventos")
 
 ## <u>Planificación</u>
 Las tecnologías usadas para crear la aplicación son las siguientes:
@@ -70,7 +70,7 @@ esta librería, se tendría que implementar la lógica en cada una de ellas por 
 creando redundancia, que a la hora de mantenibilidad y escalabilidad supone un gran 
 desafío y desperdicio de esfuerzo.
 
-![configuracion](./Proyecto_final/capturas/estructura_config_json.png "configuracion")
+![configuracion](./readme/estructura_config_json.png "configuracion")
 
 Este proyecto contiene:
 > - Archivo de configuración (JSON).
@@ -82,7 +82,7 @@ Este proyecto contiene:
 ### ***<p style="text-align:center">Aplicación de escritorio</p>***
 * **Ventana principal**
 
-![ventana_principal](./Proyecto_final/capturas/app_escritorio_princip.png "ventana_principal")
+![ventana_principal](./readme/app_escritorio_princip.png "ventana_principal")
 
 > - *Izquierda*: Se muestran los directorios y archivos locales
 > - *Derecha*: Tras seleccionar el servicio en la nube, en este caso AWS, es el único 
@@ -94,7 +94,7 @@ derecho.
 
 * **Ventana para administrar cuentas**
 
-![ventana_cuentas](./Proyecto_final/capturas/modificar_credenciales.png "ventana_cuentas")
+![ventana_cuentas](./readme/modificar_credenciales.png "ventana_cuentas")
 
 En este caso, cada usuario, deberá introducir los tokens de acceso propios, que se 
 obtienen en el apartado IAM de la página de AWS. Estos tokens deben pertenecer a 
@@ -110,7 +110,7 @@ nuevo.
 
 * **Ventana para sincronizar carpetas**
 
-![ventana_sincronizar](./Proyecto_final/capturas/sinc_carpetas.png "ventana_sincronizar")
+![ventana_sincronizar](./readme/sinc_carpetas.png "ventana_sincronizar")
 
 La información que se ve en esta ventana es el mismo sobre el que trabajará el 
 servicio de Windows, creando respaldos de las carpetas que aquí indiquemos con su 
