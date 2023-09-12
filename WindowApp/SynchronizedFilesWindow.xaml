@@ -7,7 +7,7 @@
         xmlns:util="clr-namespace:Shared.util;assembly=Shared"
         xmlns:models="clr-namespace:Shared.models;assembly=Shared"
         mc:Ignorable="d"
-        Title="Carpetas Sincronizadas" Height="250" Width="600">
+        Title="Carpetas sincronizadas" Height="250" Width="600">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"></RowDefinition>

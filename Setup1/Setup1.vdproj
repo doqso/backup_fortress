@@ -112,12 +112,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CD08A139CC3E4C31E9201311C7F14D87"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A37749942A3F44B0BF4FF6F6581B009E"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -148,12 +142,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B3C2D50C50B7D18CB9CC48A0229FDD5C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_38AB4AC6CF3EFBEEAC4CDEC5C1563D3A"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -161,6 +149,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_39364E8454186166CA58807F3B203BAB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CD08A139CC3E4C31E9201311C7F14D87"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B3C2D50C50B7D18CB9CC48A0229FDD5C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -495,7 +495,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:TRUE"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -691,9 +691,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:BackupFortress"
+        "ProductName" = "8:Backup Fortress"
         "ProductCode" = "8:{D3A3361A-C598-49EA-8EE2-712587E5414E}"
-        "PackageCode" = "8:{72999FA4-27C3-48E2-BBD4-A16540469F0B}"
+        "PackageCode" = "8:{031D701D-81B4-4372-A234-2A85741FC6F2}"
         "UpgradeCode" = "8:{D48C2A1C-A382-425B-BE39-47D67BF35CAC}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -701,12 +701,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Doqso"
+        "Manufacturer" = "8:Backup Fortress"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:BackupFortress"
+        "Title" = "8:B"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Doqso"
+        "ARPCONTACT" = "8:Giorgi"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"

@@ -1,23 +1,13 @@
 {
   "accounts": {
     "Aws": {
-      "access_key": "AKIATFVAOOY66R4JFUXW",
-      "secret_access_key": "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"
+      "access_key": "",
+      "secret_access_key": ""
     },
     "Ovh": {
       "access_key": "",
       "secret_access_key": ""
     }
   },
-  "synchronized_files": [
-    {
-      "local_path": "C:\\Users\\Doqso\\Documents\\DAM",
-      "clouds": [
-        "Aws"
-      ],
-      "backup_frequency": 56000,
-      "last_backup": 0,
-      "container": "backupfortressbucket"
-    }
-  ]
+  "synchronized_files": []
 }

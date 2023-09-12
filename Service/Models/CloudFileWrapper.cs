@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Timers;
+using Microsoft.Win32;
 using Shared.models;
 using Shared.Services;
 using Shared.util;
