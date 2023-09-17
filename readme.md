@@ -181,3 +181,6 @@ Es necesario hacerlo de esta manera ya que el servicio necesita tener acceso a l
 carpeta del usuario para guardar allí el archivo de configuración, puesto que diferentes 
 usuarios pueden tener diferentes archivos de configuración y no deben 
 entremezclarse.
+
+---
+### &copy; _Giorgi Gongadze Meladze_
